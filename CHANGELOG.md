@@ -2,7 +2,7 @@
 
 ## 0.1.3 — 2026-10-08
 
-Automatically recover once if Steam's first self-update replaces the rendering wrapper. Restricted to fresh setup without an installed Aion game. Verified against the helper-replacement failure in a disposable Steam bottle; sign-in window renders afterward.
+Automatically recover once if Steam's first self-update replaces the rendering wrapper. Restricted to fresh setup without an installed Aion game. Verified against the helper-replacement failure in a disposable Steam bottle; sign-in window reopens afterward.
 
 ## 0.1.2 — 2026-10-08
 
