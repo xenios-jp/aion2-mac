@@ -1,0 +1,13 @@
+.DS_Store
+build/
+dist/
+*.dll
+*.exe
+*.dylib
+*.log
+*.dmp
+*.tar.gz
+*.zip
+prefix/
+Libraries/
+cache/

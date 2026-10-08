@@ -1,0 +1,44 @@
+--- a/dlls/winegstreamer/aac_decoder.c
++++ b/dlls/winegstreamer/aac_decoder.c
+@@ -345,6 +345,41 @@
+         }
+ 
+         return S_OK;
++    }
++
++    /* Electra can provide raw AAC without AudioSpecificConfig. Supply a
++     * minimal AAC-LC configuration on a clone; never change caller attributes.
++     * This follows winevideo's missing-ASC fallback before MF validation. */
++    {
++        UINT32 blob_size = 0;
++        if (FAILED(IMFMediaType_GetBlobSize(type, &MF_MT_USER_DATA, &blob_size)) || !blob_size)
++        {
++            static const UINT32 rates[] = {96000, 88200, 64000, 48000, 44100,
++                    32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350};
++            IMFMediaType *configured;
++            UINT32 rate, channels, i, offset;
++            GUID subtype;
++            BYTE codec_data[sizeof(HEAACWAVEINFO) - sizeof(WAVEFORMATEX) + 2] = {0};
++
++            if (FAILED(IMFMediaType_GetUINT32(type, &MF_MT_AUDIO_SAMPLES_PER_SECOND, &rate)) ||
++                    FAILED(IMFMediaType_GetUINT32(type, &MF_MT_AUDIO_NUM_CHANNELS, &channels)) ||
++                    FAILED(IMFMediaType_GetGUID(type, &MF_MT_SUBTYPE, &subtype)))
++                return MF_E_INVALIDMEDIATYPE;
++            for (i = 0; i < ARRAY_SIZE(rates) && rates[i] != rate; ++i) {}
++            if (i == ARRAY_SIZE(rates) || !channels || channels > 7)
++                return MF_E_INVALIDMEDIATYPE;
++            if (!IsEqualGUID(&subtype, &MFAudioFormat_RAW_AAC) && !IsEqualGUID(&subtype, &MFAudioFormat_AAC))
++                return MF_E_INVALIDMEDIATYPE;
++            offset = IsEqualGUID(&subtype, &MFAudioFormat_RAW_AAC) ? 0 : sizeof(codec_data) - 2;
++            codec_data[offset] = (2 << 3) | (i >> 1);
++            codec_data[offset + 1] = ((i & 1) << 7) | (channels << 3);
++            if (FAILED(hr = MFCreateMediaType(&configured))) return hr;
++            hr = IMFMediaType_CopyAllItems(type, (IMFAttributes *)configured);
++            if (SUCCEEDED(hr)) hr = IMFMediaType_SetBlob(configured, &MF_MT_USER_DATA, codec_data, offset + 2);
++            if (SUCCEEDED(hr)) hr = transform_SetInputType(iface, id, configured, flags);
++            IMFMediaType_Release(configured);
++            return hr;
++        }
+     }
+ 
+     if (FAILED(hr = MFCreateWaveFormatExFromMFMediaType(type, (WAVEFORMATEX **)&format, &size,

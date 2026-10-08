@@ -1,0 +1,13 @@
+name: Validate scripts
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check shell syntax
+        run: bash -n install.sh scripts/*.sh scripts/*.command
+      - name: Check patch syntax
+        run: git apply --numstat patches/*.patch

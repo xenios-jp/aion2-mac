@@ -1,0 +1,28 @@
+name: Compatibility report
+description: Report a reproducible setup or gameplay problem
+body:
+  - type: input
+    id: machine
+    attributes:
+      label: Mac and macOS
+      placeholder: M5 Pro, 24 GB, macOS 27.0.1
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Project, toolkit, and game versions
+    validations:
+      required: true
+  - type: textarea
+    id: symptom
+    attributes:
+      label: Symptom and steps
+      description: Include resolution, MSync, HUD, and DLSS settings. Describe the visible stage.
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Reviewed diagnostics
+      description: Paste doctor.command output. Never upload raw logs, your bottle, or authentication tickets.
