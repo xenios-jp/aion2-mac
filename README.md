@@ -8,20 +8,21 @@ Run the Windows Steam version of **AION 2** on Apple silicon with D3DMetal.
 
 You need **Apple silicon, macOS 26 or newer, Rosetta, and about 120 GB free**. Tested on macOS 27 with D3DMetal 4.0 beta 2.
 
-1. **Get Apple’s toolkit.** Download the evaluation environment from [Apple](https://developer.apple.com/games/game-porting-toolkit/) and mount or extract it.
-2. **Run setup.** Paste this into Terminal, then select the toolkit’s `lib` folder containing `external` and `wine`:
+1. **Get Apple’s toolkit.** Download it from [Apple](https://developer.apple.com/games/game-porting-toolkit/) and mount the included **Evaluation environment** disk image.
+2. **Open [AION 2.app](https://github.com/xenios-jp/aion2-mac/releases/download/v0.1.1/AION-2-Mac-v0.1.1.zip).** Unzip and open it, then choose the evaluation environment’s `redist/lib` folder. Setup opens Terminal for progress and any license prompts. [First-open help](docs/troubleshooting.md#macos-blocks-the-app).
+3. **Install and play.** Sign into Steam and install **AION 2** and its offered prerequisites. Afterwards, **AION 2.app** starts the game with Steam in the background.
+
+Prefer Terminal? Use the same setup:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.0/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.1/install.sh | bash
 ```
 
-3. **Install and play.** Sign into Steam, install **AION 2** and its offered prerequisites, then double-click **AION 2.command** on your Desktop.
-
-Setup creates a separate bottle, installs Steam and the compatibility fixes, and opens Steam. Apple’s libraries are supplied by you. If Rosetta is missing, setup prints the command to install it.
+Setup creates a separate bottle, installs Steam and the compatibility fixes, and opens Steam. Apple’s libraries are supplied by you. If Rosetta is missing, setup offers to install it and lets you accept Apple’s license.
 
 ## Need help?
 
-[Troubleshooting](docs/troubleshooting.md) · [Launch options / Metal HUD](docs/usage.md) · [Compatibility](docs/compatibility.md) · [Build from source](docs/building.md)
+[Troubleshooting](docs/troubleshooting.md) · [Screenshots](docs/screenshots.md) · [Performance](docs/performance.md) · [Options](docs/usage.md) · [Compatibility](docs/compatibility.md)
 
 ## Credits
 

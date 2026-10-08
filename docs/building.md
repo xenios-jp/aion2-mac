@@ -8,9 +8,9 @@ export LLVM_MINGW_ROOT="/path/to/llvm-mingw-20260922-ucrt-macos-universal"
 bash scripts/build-fixes.sh
 ```
 
-The script downloads the pinned WineCX source, verifies its archive, applies the two included patches, builds only the PE `winegstreamer.dll`, and builds the errno bridge, Steam wrapper, and display-size helper. No Apple libraries are needed for the build. Apple libraries are needed for runtime tests.
+The script downloads the pinned WineCX source, verifies its archive, applies the two included patches, builds only the PE `winegstreamer.dll`, and builds the errno bridge, Steam wrapper, display-size and driver-notice helpers, and audio-routing helpers. No Apple libraries are needed for the build. Apple libraries are needed for runtime tests.
 
-The release includes `winecx-aion2-corresponding-source-v0.1.0.tar.gz`, containing the exact Wine source with the applied decoder patches. You may modify and replace the LGPL component. The Unix half stays unchanged and must match runtime-v4.7.3.
+The release includes `winecx-aion2-corresponding-source-v0.1.1.tar.gz`, containing the exact Wine source with the applied decoder patches. You may modify and replace the LGPL component. The Unix half stays unchanged and must match runtime-v4.7.3.
 
 ## Validation performed
 

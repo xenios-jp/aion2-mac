@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 umask 077
-VERSION=0.1.0
+VERSION=0.1.1
 RUNTIME_SHA=a4b5d63493f80698cce5cad8e7212d9a51c8292037b00c478f4652636fcfd331
-FIXES_SHA=419878cba74ad430e9dc2878a7adb4b3a61a65db406db2942a36521776fe4b51
+FIXES_SHA=f3ed553885c687e608af5485f12404b3ebcc43bbe3c19765a01195f7b267c7f1
 ROOT="${AION2_MAC_HOME:-$HOME/Library/Application Support/Aion2Mac}"
 GPTK="${AION2_GPTK_LIB:-}"
 RUNTIME_ARCHIVE= FIXES_ARCHIVE= SKIP_STEAM=0 NO_LAUNCH=0 DRY_RUN=0
@@ -36,7 +36,9 @@ while [ "$#" -gt 0 ]; do
 done
 if [ -f "$ROOT/.ready-v$VERSION" ] && [ "$DRY_RUN" = 0 ]; then
   printf 'Already installed: %s/scripts/start.command\n' "$ROOT"
-  if [ "$NO_LAUNCH" = 0 ]; then open "$ROOT/scripts/start.command"; fi
+  if [ "$NO_LAUNCH" = 0 ]; then
+    if [ -d "$ROOT/AION 2.app" ]; then open "$ROOT/AION 2.app"; else open "$ROOT/scripts/start.command"; fi
+  fi
   exit 0
 fi
 [ "$(uname -s)" = Darwin ] || die 'This installer runs on macOS.'
@@ -58,7 +60,11 @@ if [ "$DRY_RUN" = 1 ]; then
   printf 'Plan: verify pinned downloads, stage D3DMetal, create a fresh bottle, install compatibility fixes, install Steam.\n'
   exit 0
 fi
-/usr/bin/arch -x86_64 /usr/bin/true 2>/dev/null || die 'Rosetta is required. Run: softwareupdate --install-rosetta'
+if ! /usr/bin/arch -x86_64 /usr/bin/true 2>/dev/null; then
+  osascript -e 'display dialog "AION 2 needs Rosetta 2. Install it now? Apple’s installer will ask you to accept its license in Terminal." buttons {"Cancel", "Install"} default button "Install" cancel button "Cancel"' >/dev/null || die 'Rosetta installation canceled.'
+  /usr/sbin/softwareupdate --install-rosetta </dev/tty || die 'Rosetta installation failed. Run: softwareupdate --install-rosetta'
+  /usr/bin/arch -x86_64 /usr/bin/true 2>/dev/null || die 'Rosetta is still unavailable. Complete its installation and try again.'
+fi
 mkdir -p "$ROOT"
 mkdir "$ROOT/.install-lock" 2>/dev/null || die 'Another installer is running (or remove a stale .install-lock).'
 STAGE=$(mktemp -d "${TMPDIR:-/tmp}/aion2-mac.XXXXXX")
@@ -131,11 +137,16 @@ if [ "$SKIP_STEAM" = 0 ]; then
   fi
   WINEDEBUG=-all wine_run reg delete 'HKCU\Software\Microsoft\Windows\CurrentVersion\Run' /v Steam /f >> "$ROOT/logs/setup.log" 2>&1 || true
   "$ROOT/scripts/prepare-steam.sh"
-  touch "$ROOT/.ready-v$VERSION"
 fi
-if [ "$ROOT" = "$HOME/Library/Application Support/Aion2Mac" ] && [ -d "$HOME/Desktop" ] && [ ! -e "$HOME/Desktop/AION 2.command" ] && [ ! -L "$HOME/Desktop/AION 2.command" ]; then
-  ln -s "$ROOT/scripts/start.command" "$HOME/Desktop/AION 2.command"
+if [ "$SKIP_STEAM" = 0 ] && [ "$ROOT" = "$HOME/Library/Application Support/Aion2Mac" ]; then
+  if [ ! -d "$ROOT/AION 2.app" ]; then "$ROOT/fixes/scripts/build-app.sh" "$ROOT"; fi
+  if [ -d "$HOME/Desktop" ] && [ ! -e "$HOME/Desktop/AION 2.app" ] && [ ! -L "$HOME/Desktop/AION 2.app" ]; then
+    ln -s "$ROOT/AION 2.app" "$HOME/Desktop/AION 2.app"
+  fi
 fi
+if [ "$SKIP_STEAM" = 0 ]; then touch "$ROOT/.ready-v$VERSION"; fi
 printf '\nReady. Open: %s/scripts/start.command\n' "$ROOT"
 printf 'Log in to Steam, install AION 2 (app 3393110), and install its prerequisites when prompted.\n'
-if [ "$NO_LAUNCH" = 0 ] && [ "$SKIP_STEAM" = 0 ]; then open "$ROOT/scripts/start.command"; fi
+if [ "$NO_LAUNCH" = 0 ] && [ "$SKIP_STEAM" = 0 ]; then
+  if [ -d "$ROOT/AION 2.app" ]; then open "$ROOT/AION 2.app"; else open "$ROOT/scripts/start.command"; fi
+fi
