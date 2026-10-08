@@ -1,5 +1,9 @@
 # Releases
 
+## 0.1.3 — 2026-10-08
+
+Automatically recover once if Steam's first self-update replaces the rendering wrapper. Restricted to fresh setup without an installed Aion game. Verified against the helper-replacement failure in a disposable Steam bottle; sign-in window renders afterward.
+
 ## 0.1.2 — 2026-10-08
 
 Prevent Steam helper recursion when upgrading a different wrapper. Preserve the genuine CEF backup, validate it before launch, and fail safely if both copies are wrappers. Includes regression checks for wrapper upgrades and recursive delegation.

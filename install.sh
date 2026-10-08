@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 umask 077
-VERSION=0.1.2
+VERSION=0.1.3
 RUNTIME_SHA=a4b5d63493f80698cce5cad8e7212d9a51c8292037b00c478f4652636fcfd331
-FIXES_SHA=358ecd1090eeca8896c998aadc7127cee382853fa83e859f81b4b92df191c2ee
+FIXES_SHA=43a1c76ccb2052d2d0d77db7742eaf473f874c23aefa09ce6b88d4f58a645566
 ROOT="${AION2_MAC_HOME:-$HOME/Library/Application Support/Aion2Mac}"
 GPTK="${AION2_GPTK_LIB:-}"
 RUNTIME_ARCHIVE= FIXES_ARCHIVE= SKIP_STEAM=0 NO_LAUNCH=0 DRY_RUN=0
@@ -134,6 +134,7 @@ if [ "$SKIP_STEAM" = 0 ]; then
   if [ ! -f "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steam.exe" ]; then
     download 'https://cdn.akamai.steamstatic.com/client/installer/SteamSetup.exe' "$ROOT/cache/SteamSetup.exe"
     WINEDEBUG=-all wine_run "$ROOT/cache/SteamSetup.exe" /S >> "$ROOT/logs/setup.log" 2>&1
+    touch "$ROOT/.steam-first-launch"
   fi
   WINEDEBUG=-all wine_run reg delete 'HKCU\Software\Microsoft\Windows\CurrentVersion\Run' /v Steam /f >> "$ROOT/logs/setup.log" 2>&1 || true
   "$ROOT/scripts/prepare-steam.sh"

@@ -14,7 +14,7 @@ cat > "$APP/Contents/Resources/setup.command" <<'SCRIPT'
 set -euo pipefail
 STAGE=$(mktemp -d "${TMPDIR:-/tmp}/aion2-setup.XXXXXX")
 trap 'rm -rf "$STAGE"' EXIT
-curl -fsSL --retry 2 --proto '=https' https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.2/install.sh -o "$STAGE/install.sh"
+curl -fsSL --retry 2 --proto '=https' https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.3/install.sh -o "$STAGE/install.sh"
 /bin/bash "$STAGE/install.sh"
 SCRIPT
 cat > "$APP/Contents/Resources/launch.command" <<'SCRIPT'
@@ -28,6 +28,6 @@ chmod +x "$APP/Contents/Resources/"*.command
 /usr/libexec/PlistBuddy -c 'Add :LSUIElement bool true' "$APP/Contents/Info.plist"
 /usr/libexec/PlistBuddy -c 'Add :CFBundleIdentifier string jp.xenios.aion2mac' "$APP/Contents/Info.plist"
 /usr/libexec/PlistBuddy -c 'Add :LSApplicationCategoryType string public.app-category.games' "$APP/Contents/Info.plist"
-/usr/libexec/PlistBuddy -c 'Add :CFBundleShortVersionString string 0.1.2' "$APP/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c 'Add :CFBundleShortVersionString string 0.1.3' "$APP/Contents/Info.plist"
 codesign --force --sign - "$APP"
 printf 'Built %s\n' "$APP"

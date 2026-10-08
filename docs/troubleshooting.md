@@ -12,6 +12,10 @@ Setup checks Rosetta by running an x86_64 system program. If unavailable, it off
 
 Normal game launches use Steam's `-silent` switch. To manage downloads or your library, open `scripts/steam.command` in the installation folder. Steam remains required for this build's authentication.
 
+## First Steam setup restarts once
+
+Steam's initial self-update can replace its UI helper after setup patches it. During a fresh installation, the launcher watches for this and repairs/restarts Steam once automatically. The recovery is bounded and does not run once Aion is installed.
+
 ## Steam is black or sluggish
 
 Run `scripts/prepare-steam.sh` from the installation directory after Steam updates finish, then launch normally. It preserves the genuine helper as `steamwebhelper_real.exe` and reinstalls the wrapper. The wrapper uses software CEF rendering, so the client may be slower than native Steam. Disable animated/library-heavy content in Steam settings if needed.
