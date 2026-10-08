@@ -38,5 +38,12 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 <key>NSHighResolutionCapable</key><true/>
 </dict></plist>
 PLIST
-codesign --force --sign - "$APP"
+IDENTITY="${AION2_SIGNING_IDENTITY:--}"
+if [ "$IDENTITY" = - ]; then
+  codesign --force --sign - "$APP"
+  echo 'Preview signature: public downloads require macOS first-open approval.'
+else
+  case "$IDENTITY" in 'Developer ID Application:'*) ;; *) echo 'Use a Developer ID Application identity for public distribution.' >&2; exit 1;; esac
+  codesign --force --options runtime --timestamp --sign "$IDENTITY" "$APP"
+fi
 printf 'Built %s\n' "$APP"

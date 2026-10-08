@@ -8,6 +8,8 @@ Run the Windows Steam version of **AION 2** on Apple silicon with D3DMetal.
 
 You need **Apple silicon, macOS 26 or newer, Rosetta, and about 120 GB free**. Tested on macOS 27 with D3DMetal 4.0 beta 2.
 
+**First-open limitation:** this preview is not notarized. If macOS blocks it, click **Done**, then use **System Settings → Privacy & Security → Open Anyway** for AION 2. Proper Developer ID signing and notarization are pending.
+
 1. **Open [AION 2.app](https://github.com/xenios-jp/aion2-mac/releases/download/v0.1.4/AION-2-Mac-v0.1.4.zip).** Unzip it and drag the app into Applications. [First-open help](docs/troubleshooting.md#macos-blocks-the-app).
 2. **Follow the setup window.** It links to Apple’s toolkit, detects the mounted **Evaluation environment**, offers Rosetta if needed, and prepares the game environment with progress inside the app.
 3. **Install and play.** The app opens Steam for sign-in and **AION 2** installation. Return to the setup window and click **Play AION 2**. Future launches go straight to the game with Steam in the background.
