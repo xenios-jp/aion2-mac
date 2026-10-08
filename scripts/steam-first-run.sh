@@ -5,6 +5,9 @@ source "$(dirname "$0")/env.sh"
 URL="${1:?Steam action required}"
 case "$URL" in steam://open/library|steam://install/3393110) ;; *) exit 2;; esac
 [ -f "$ROOT/.steam-first-launch" ] || exit 0
+# Repeated Open Steam clicks must not schedule competing repair restarts.
+mkdir "$ROOT/.steam-first-run-lock" 2>/dev/null || exit 0
+trap 'rmdir "$ROOT/.steam-first-run-lock" 2>/dev/null || true' EXIT
 STEAM="$WINEPREFIX/drive_c/Program Files (x86)/Steam"
 HELPER="$STEAM/bin/cef/cef.win64/steamwebhelper.exe"
 WRAPPER="$ROOT/fixes/bin/steamwebhelper-wrapper.exe"

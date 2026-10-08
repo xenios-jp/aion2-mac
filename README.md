@@ -8,17 +8,17 @@ Run the Windows Steam version of **AION 2** on Apple silicon with D3DMetal.
 
 You need **Apple silicon, macOS 26 or newer, Rosetta, and about 120 GB free**. Tested on macOS 27 with D3DMetal 4.0 beta 2.
 
-1. **Get Apple’s toolkit.** Download it from [Apple](https://developer.apple.com/games/game-porting-toolkit/) and mount the included **Evaluation environment** disk image.
-2. **Open [AION 2.app](https://github.com/xenios-jp/aion2-mac/releases/download/v0.1.3/AION-2-Mac-v0.1.3.zip).** Unzip and open it, then choose the evaluation environment’s `redist/lib` folder. Setup opens Terminal for progress and any license prompts. [First-open help](docs/troubleshooting.md#macos-blocks-the-app).
-3. **Install and play.** Sign into Steam and install **AION 2** and its offered prerequisites. Afterwards, **AION 2.app** starts the game with Steam in the background.
+1. **Open [AION 2.app](https://github.com/xenios-jp/aion2-mac/releases/download/v0.1.4/AION-2-Mac-v0.1.4.zip).** Unzip it and drag the app into Applications. [First-open help](docs/troubleshooting.md#macos-blocks-the-app).
+2. **Follow the setup window.** It links to Apple’s toolkit, detects the mounted **Evaluation environment**, offers Rosetta if needed, and prepares the game environment with progress inside the app.
+3. **Install and play.** The app opens Steam for sign-in and **AION 2** installation. Return to the setup window and click **Play AION 2**. Future launches go straight to the game with Steam in the background.
 
 Prefer Terminal? Use the same setup:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.3/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.4/install.sh | bash
 ```
 
-Setup creates a separate bottle, installs Steam and the compatibility fixes, and opens Steam. Apple’s libraries are supplied by you. If Rosetta is missing, setup offers to install it and lets you accept Apple’s license.
+The app uses native macOS controls and requires no Terminal. Setup creates a separate bottle and installs Steam and the compatibility fixes. Apple’s toolkit download and Steam sign-in are handled through their official interfaces; their libraries and account data are not bundled.
 
 ## Need help?
 

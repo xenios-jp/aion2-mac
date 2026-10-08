@@ -4,17 +4,23 @@
 
 The preview app is locally signed but **not Developer ID signed or notarized**. macOS may require you to approve it in System Settings → Privacy & Security → Open Anyway after attempting to open it. Do not disable Gatekeeper. The Terminal command in the README is an alternative.
 
+## Setup asks for Apple’s toolkit
+
+Download Apple’s Game Porting Toolkit and open its included **Evaluation environment** disk image. Setup detects a single mounted complete payload automatically. If it cannot find one, it explains what to download and links to Apple. With multiple mounted toolkits or an extracted folder, use Choose Toolkit. The project cannot include Apple’s libraries in its download.
+
 ## Rosetta is missing
 
-Setup checks Rosetta by running an x86_64 system program. If unavailable, it offers installation and runs Apple's installer in Terminal so you can read and accept the license. Canceling stops setup cleanly.
+Setup checks Rosetta by running an x86_64 system program. The native app offers Apple’s Rosetta installation window and waits for installation to finish. You accept Apple’s license yourself. The optional Terminal installer uses softwareupdate instead.
 
 ## Open Steam separately
 
 Normal game launches use Steam's `-silent` switch. To manage downloads or your library, open `scripts/steam.command` in the installation folder. Steam remains required for this build's authentication.
 
-## First Steam setup restarts once
+## Steam downloads an update during setup
 
-Steam's initial self-update can replace its UI helper after setup patches it. During a fresh installation, the launcher watches for this and repairs/restarts Steam once automatically. The recovery is bounded and does not run once Aion is installed.
+Steam’s official installer is a bootstrapper. Setup waits for the current 64-bit client to finish its initial update and verify its files before applying the display fix and offering Open Steam. Progress shows the actual update stage and download size. Steam can still perform later updates normally.
+
+A bounded repair remains for older, incomplete setups whose first update replaces the UI helper. Only one repair can run at a time, and it does not run once a game manifest exists.
 
 ## Steam is black or sluggish
 
@@ -40,7 +46,7 @@ Select the desired output in macOS Sound settings. The launcher forwards output 
 
 ## Multiple Dock icons
 
-The app launcher runs as a background agent. The game has its own Dock entry; Steam's UI helper may still create another. Silent Steam suppresses its main window, but does not remove that helper's Dock icon.
+The native setup app has a Dock entry during onboarding and exits when it starts the game. The game has its own Dock entry; Steam's UI helper may still create another. Silent Steam suppresses its main window, but does not remove that helper's Dock icon.
 
 ## Clicks are displaced
 
@@ -67,3 +73,7 @@ Keep the normal quiet launch, compare MSync on/off in the same scene, and collec
 `scripts/doctor.command` prints versions and file-presence checks without reading login data. Local logs are in the installation’s `logs` directory and can contain authentication tickets; share only reviewed, redacted excerpts. Never publish the prefix, Steam userdata, dumps, or raw launch arguments.
 
 To remove the setup, quit its game and Steam session, then remove the dedicated `Aion2Mac` installation directory. Other Wine bottles are independent.
+
+## Steam was closed during onboarding
+
+The app tracks Steam’s live process and window state. Closing it stops the waiting indicator and offers Open Steam Again. A hidden client shows Show Steam. The Play button appears only when Steam marks the game fully installed and its executable exists.

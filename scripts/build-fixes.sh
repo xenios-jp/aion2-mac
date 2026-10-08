@@ -31,5 +31,8 @@ x86_64-w64-mingw32-clang -O2 "$REPO/src/display-size.c" -o "$BUILD/bin/display-s
 x86_64-w64-mingw32-clang -O2 "$REPO/src/driver-notice.c" -o "$BUILD/bin/driver-notice.exe"
 x86_64-w64-mingw32-clang++ -O2 "$REPO/src/audio-default.cpp" -lole32 -luuid -ladvapi32 -o "$BUILD/bin/audio-default.exe"
 /usr/bin/clang -arch arm64 -fobjc-arc -O2 "$REPO/src/audio-follow.m" -framework AppKit -framework CoreAudio -o "$BUILD/bin/audio-follow"
+xcrun swiftc -O -parse-as-library -target arm64-apple-macos26.0 "$REPO/src/Launcher.swift" -o "$BUILD/bin/aion2-launcher"
+x86_64-w64-mingw32-clang -O2 -Wall -Wextra "$REPO/src/focus-game.c" -o "$BUILD/bin/focus-game.exe"
+x86_64-w64-mingw32-clang -O2 -Wall -Wextra "$REPO/src/steam-ready.c" -o "$BUILD/bin/steam-ready.exe"
 llvm-strip --strip-debug "$BUILD/bin/winegstreamer.dll" "$BUILD/bin/steamwebhelper-wrapper.exe"
 printf 'Built compatibility files in %s/bin\n' "$BUILD"

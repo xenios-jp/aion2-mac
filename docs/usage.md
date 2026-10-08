@@ -1,6 +1,6 @@
 # Launch options
 
-Double-click **AION 2.app** on your Desktop. To open Steam separately, use `scripts/steam.command` in the installation folder.
+Open **AION 2.app** from Applications. The first launch guides setup and Steam installation; subsequent launches start the installed game. Reopening it focuses a game already running in this bottle. To open Steam separately, use `scripts/steam.command` in the installation folder.
 
 Or use Terminal:
 
@@ -34,4 +34,6 @@ Run `doctor.command` before opening an issue. Share its concise output and the v
 
 ## Where the bottle lives
 
-A fresh setup stores its Windows environment at `~/Library/Application Support/Aion2Mac/prefix`, alongside its runtime and fixes. The `.app` is the Mac entry point. Running setup again reuses this project's completed installation; it does not search other Wine/CrossOver bottles or copy their accounts. Existing installations in other bottles need an explicit migration, which this preview does not automate.
+A fresh setup stores its Windows environment at `~/Library/Application Support/Aion2Mac/prefix`, alongside its runtime and fixes. The `.app` is the Mac entry point. The downloaded app detects this project's completed installation even when the app version changes. Running setup again reuses a completed project installation; it does not search other Wine/CrossOver bottles or copy their accounts. Existing installations in other bottles need an explicit migration, which this preview does not automate.
+
+Setup shows nine stages with the current action. Downloads report received bytes. Setup completes Steam’s first client updates before handing over. The Steam handoff shows a waiting indicator and elapsed time until its window opens, then tracks whether it is visible, hidden, or closed. A prefix-scoped observer marks the Steam window open once its visible client window exists. Repeated clicks cannot schedule competing first-update repairs.

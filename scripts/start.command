@@ -3,6 +3,8 @@ set -euo pipefail
 umask 077
 source "$(dirname "$0")/env.sh"
 mkdir -p "$ROOT/logs"
+# Reopening the Mac app focuses an existing game in this bottle.
+if WINEDEBUG=-all wine_run "$ROOT/fixes/bin/focus-game.exe" >/dev/null 2>&1; then exit 0; fi
 "$ROOT/scripts/prepare-steam.sh"
 if [ ! -f "$WINEPREFIX/drive_c/Program Files (x86)/Steam/steamapps/appmanifest_3393110.acf" ]; then
   echo 'Sign into Steam and install AION 2, then launch AION 2.app again.'
