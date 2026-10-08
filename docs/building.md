@@ -10,7 +10,7 @@ bash scripts/build-fixes.sh
 
 The script downloads the pinned WineCX source, verifies its archive, applies the two included patches, builds only the PE `winegstreamer.dll`, and builds the errno bridge, Steam wrapper, display-size and driver-notice helpers, and audio-routing helpers. No Apple libraries are needed for the build. Apple libraries are needed for runtime tests.
 
-The release includes `winecx-aion2-corresponding-source-v0.1.1.tar.gz`, containing the exact Wine source with the applied decoder patches. You may modify and replace the LGPL component. The Unix half stays unchanged and must match runtime-v4.7.3.
+The release includes `winecx-aion2-corresponding-source-v0.1.2.tar.gz`, containing the exact Wine source with the applied decoder patches. You may modify and replace the LGPL component. The Unix half stays unchanged and must match runtime-v4.7.3.
 
 ## Validation performed
 
@@ -19,6 +19,6 @@ The release includes `winecx-aion2-corresponding-source-v0.1.1.tar.gz`, containi
 - AAC packets: both raw and ordinary AAC, with and without initialization data; 35 nonzero PCM frames for each case.
 - D3D12 / NGX: initialization, feature requirements, SuperSampling capability and NVAPI identity probes.
 - 30,000 cross-thread auto-reset-event handoffs for MSync comparison.
-- Fresh installer smoke test and shell validation; full clean-bottle game certification remains open.
+- Fresh installer including Steam bootstrap, completed-install rerun, signed app build and wrapper-recursion regression checks. Existing-bottle public launcher starts Aion. Full fresh-account gameplay certification remains open.
 
 Test sources for the project-owned errno reproducer are in `tests`. The release source package and repository patches document how the Wine component was produced. Proprietary game media used during development are not distributed.

@@ -166,13 +166,42 @@ static const wchar_t *args_tail(void)
     return cmd;
 }
 
-int wmain(void)
+/* Refuse another wrapper as the delegate, including older builds. */
+static int check_real(const wchar_t *path)
 {
+    HANDLE file = CreateFileW(path, GENERIC_READ, FILE_SHARE_READ, NULL,
+                              OPEN_EXISTING, 0, NULL);
+    if (file == INVALID_HANDLE_VALUE) return 1;
+    LARGE_INTEGER size;
+    if (!GetFileSizeEx(file, &size) || size.QuadPart < 64 || size.QuadPart > 128 * 1024 * 1024) {
+        CloseHandle(file);
+        return 1;
+    }
+    BYTE *bytes = (BYTE *)malloc((size_t)size.QuadPart);
+    DWORD read = 0;
+    int result = 1;
+    if (bytes && ReadFile(file, bytes, (DWORD)size.QuadPart, &read, NULL) &&
+        read == (DWORD)size.QuadPart && bytes[0] == 'M' && bytes[1] == 'Z') {
+        result = 0;
+        const wchar_t marker[] = REAL_BINARY;
+        for (size_t i = 0; i + sizeof(marker) <= read; i++) {
+            if (!memcmp(bytes + i, marker, sizeof(marker))) { result = 2; break; }
+        }
+    }
+    free(bytes);
+    CloseHandle(file);
+    return result;
+}
+
+int wmain(int argc, wchar_t **argv)
+{
+    if (argc == 3 && !wcscmp(argv[1], L"--check-real")) return check_real(argv[2]);
     wchar_t self_path[MAX_PATH] = {0};
     wchar_t *real = resolve_real_binary(self_path, MAX_PATH);
     if (!real) {
         return 1;
     }
+    if (check_real(real)) { free(real); return 86; }
 
     debug_open(self_path);
     debug_log(L"[wrapper] self=%ls\n", self_path);

@@ -18,7 +18,17 @@ if [ ! -f "$HELPER" ]; then
   # This server belongs exclusively to our fresh bottle.
   "$WINESERVER" -k; "$WINESERVER" -w
 fi
-if ! cmp -s "$HELPER" "$WRAPPER"; then
+valid_real() { WINEDEBUG=-all wine_run "$WRAPPER" --check-real "$1" >/dev/null 2>&1; }
+REAL="${HELPER%/*}/steamwebhelper_real.exe"
+if cmp -s "$HELPER" "$WRAPPER"; then
+  valid_real "$REAL" || { echo 'Steam helper backup is missing or is another wrapper. Repair Steam client files before continuing.' >&2; exit 1; }
+elif valid_real "$HELPER"; then
   cp "$HELPER" "${HELPER%/*}/steamwebhelper_real.exe"
   cp "$WRAPPER" "$HELPER"
+elif valid_real "$REAL"; then
+  # Upgrade an older wrapper without overwriting the genuine CEF backup.
+  cp "$WRAPPER" "$HELPER"
+else
+  echo 'Neither Steam helper is a usable original. Repair Steam client files before continuing.' >&2
+  exit 1
 fi

@@ -16,6 +16,10 @@ Normal game launches use Steam's `-silent` switch. To manage downloads or your l
 
 Run `scripts/prepare-steam.sh` from the installation directory after Steam updates finish, then launch normally. It preserves the genuine helper as `steamwebhelper_real.exe` and reinstalls the wrapper. The wrapper uses software CEF rendering, so the client may be slower than native Steam. Disable animated/library-heavy content in Steam settings if needed.
 
+## Steam repeatedly starts helper processes
+
+Use v0.1.2 or newer. Older setup scripts could mistake an existing wrapper for Steam's original helper during an upgrade. The current installer preserves and checks the genuine backup, and the wrapper refuses to launch another wrapper. If setup reports that both copies are wrappers, quit this bottle, repair Steam's client files, then rerun setup.
+
 ## Game closes
 
 Report the visible stage and whether Steam reports the game stopped. The errno bridge fixes a reproduced native TLS fault, but other exit-code-1 failures have occurred. Do not infer an anti-cheat kernel requirement or a complete anti-cheat fix from those exits.

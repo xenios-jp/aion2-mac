@@ -8,6 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check shell syntax
-        run: for file in install.sh scripts/*.sh scripts/*.command; do bash -n "$file"; done
+        run: for file in install.sh scripts/*.sh scripts/*.command tests/*.sh; do bash -n "$file"; done
       - name: Check patch syntax
         run: git apply --numstat patches/*.patch

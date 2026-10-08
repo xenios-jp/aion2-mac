@@ -1,5 +1,9 @@
 # Releases
 
+## 0.1.2 — 2026-10-08
+
+Prevent Steam helper recursion when upgrading a different wrapper. Preserve the genuine CEF backup, validate it before launch, and fail safely if both copies are wrappers. Includes regression checks for wrapper upgrades and recursive delegation.
+
 ## 0.1.1 — 2026-10-08
 
 App wrapper; Rosetta installation prompt; silent Steam game launch and separate library launcher; narrowly matched automatic No for the optional Windows driver download; corrected hex adapter IDs; HUD/capture disabled; live audio output refresh and automatic forwarding; background app launcher; windowed option, screenshots and performance notes. Direct presentation and Aion DLSS menu selection remain experimental.
