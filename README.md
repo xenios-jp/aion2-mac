@@ -8,19 +8,55 @@ Run the Windows Steam version of **AION 2** on Apple silicon with D3DMetal.
 
 You need **Apple silicon, macOS 26 or newer, Rosetta, and about 120 GB free**. Tested on macOS 27 with D3DMetal 4.0 beta 2.
 
-**First-open limitation:** this preview is not notarized. If macOS blocks it, click **Done**, then use **System Settings → Privacy & Security → Open Anyway** for AION 2. Proper Developer ID signing and notarization are pending.
+### 1. Open the app and get Apple’s toolkit
 
-1. **Open [AION 2.app](https://github.com/xenios-jp/aion2-mac/releases/download/v0.1.4/AION-2-Mac-v0.1.4.zip).** Unzip it and drag the app into Applications. [First-open help](docs/troubleshooting.md#macos-blocks-the-app).
-2. **Follow the setup window.** It links to Apple’s toolkit, detects the mounted **Evaluation environment**, offers Rosetta if needed, and prepares the game environment with progress inside the app.
-3. **Install and play.** The app opens Steam for sign-in and **AION 2** installation. Return to the setup window and click **Play AION 2**. Future launches go straight to the game with Steam in the background.
+[Download AION 2.app](https://github.com/xenios-jp/aion2-mac/releases/download/v0.1.4/AION-2-Mac-v0.1.4.zip), unzip it, and drag it into **Applications**. Open the app, then click **Download from Apple…**. Download Apple’s toolkit and open the **Evaluation environment** disk image inside it. The app detects it automatically.
 
-Prefer Terminal? Use the same setup:
+<details>
+<summary>macOS says “AION 2.app Not Opened”?</summary>
+
+This preview is not notarized yet. Click **Done**, then **System Settings → Privacy & Security → Open Anyway** for AION 2. Complete macOS’s confirmation and reopen the app. [First-open help](docs/troubleshooting.md#macos-blocks-the-app).
+
+<img src="assets/setup-flow/macos-first-open.png" alt="macOS first-open warning for the unnotarized AION 2 preview" width="360">
+
+</details>
+
+<img src="assets/setup-flow/01-toolkit.png" alt="First launch: download Apple’s toolkit and mount its Evaluation environment" width="560">
+
+If Rosetta is missing, the app offers **Install Rosetta…**. Complete Apple’s installation window, then return here.
+
+### 2. Set up and let the updates finish
+
+When the toolkit says **Ready**, click **Set Up AION 2**. Keep the window open while it prepares the bottle, graphics and video support, and Steam. Steam’s initial client updates happen here too; this can take several minutes.
+
+| Toolkit detected | Setup in progress |
+| --- | --- |
+| <img src="assets/setup-flow/02-ready.png" alt="Toolkit detected with the Set Up AION 2 button enabled" width="380"> | <img src="assets/setup-flow/03-progress.png" alt="Setup reports the current operation, download size, stage, and elapsed time" width="380"> |
+
+*Screens captured from the app’s setup UI. The progress values shown are illustrative; your download size and timing will vary.*
+
+### 3. Install in Steam, then play
+
+Click **Open Steam**, sign in, and install **AION 2** and its offered prerequisites. Return to this window: **Play AION 2** appears once installation finishes. Click it to start the game. Future app launches go straight to your installed game, with Steam in the background.
+
+| Finish installation in Steam | Ready to play |
+| --- | --- |
+| <img src="assets/setup-flow/04-steam.png" alt="Setup complete: open Steam to sign in and install AION 2" width="380"> | <img src="assets/setup-flow/05-play.png" alt="Installation finished: the Play AION 2 button is available" width="380"> |
+
+Closed Steam before finishing? Use **Open Steam Again** in the setup window. [Troubleshooting](docs/troubleshooting.md).
+
+<details>
+<summary>Prefer Terminal?</summary>
+
+Mount Apple’s Evaluation environment first, then run:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.4/install.sh | bash
 ```
 
-The app uses native macOS controls and requires no Terminal. Setup creates a separate bottle and installs Steam and the compatibility fixes. Apple’s toolkit download and Steam sign-in are handled through their official interfaces; their libraries and account data are not bundled.
+</details>
+
+The app uses native macOS controls and requires no Terminal. Setup creates a separate bottle; Apple’s libraries, game files, and account data are supplied through their official interfaces.
 
 ## Need help?
 
