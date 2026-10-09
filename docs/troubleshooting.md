@@ -1,5 +1,7 @@
 # Troubleshooting
 
+Find the symptom below. For instructions referring to a helper file, open Finder, choose **Go → Go to Folder…**, and paste `~/Library/Application Support/Aion2Mac/scripts`. Double-click the named file; it opens in Terminal. Custom installations use their own `scripts` folder.
+
 ## macOS blocks the app
 
 The preview app is locally signed but **not Developer ID signed or notarized**. macOS may require you to approve it in System Settings → Privacy & Security → Open Anyway after attempting to open it. Do not disable Gatekeeper. The Terminal command in the README is an alternative.
@@ -14,7 +16,7 @@ Setup checks Rosetta by running an x86_64 system program. The native app offers 
 
 ## Open Steam separately
 
-Normal game launches use Steam's `-silent` switch. To manage downloads or your library, open `scripts/steam.command` in the installation folder. Steam remains required for this build's authentication.
+To manage downloads or your library, double-click **steam.command** in the folder above. This opens the bottle’s Windows Steam; the native Mac Steam app is separate. During setup, use the app’s **Open Steam** or **Show Steam** button instead. Normal game launches keep Steam in the background. Steam remains required for this build's authentication.
 
 ## Steam downloads an update during setup
 
@@ -72,7 +74,7 @@ Keep the normal quiet launch, compare MSync on/off in the same scene, and collec
 
 `scripts/doctor.command` prints versions and file-presence checks without reading login data. Local logs are in the installation’s `logs` directory and can contain authentication tickets; share only reviewed, redacted excerpts. Never publish the prefix, Steam userdata, dumps, or raw launch arguments.
 
-To remove the setup, quit its game and Steam session, then remove the dedicated `Aion2Mac` installation directory. Other Wine bottles are independent.
+To remove only the Mac launcher, delete **AION 2.app**; the bottle and game files remain. To remove the whole installation, quit the game, its Windows Steam session, and the launcher, then remove `~/Library/Application Support/Aion2Mac`, the app, and any Desktop shortcut. **Removing that data folder deletes this bottle’s installed games and local settings.** Preserve any local saves you need first. Other Wine bottles are independent.
 
 ## Steam was closed during onboarding
 

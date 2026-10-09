@@ -1,8 +1,25 @@
-# Launch options
+# Everyday use and launch options
+
+Change graphics quality, upscaling, sound, and controls in **AION 2’s own settings**. The Mac launcher currently has no separate Settings window. The Terminal options below are optional troubleshooting controls; most users can keep the defaults.
 
 Open **AION 2.app** from Applications. The first launch guides setup and Steam installation; subsequent launches start the installed game. Reopening it focuses a game already running in this bottle. To open Steam separately, use `scripts/steam.command` in the installation folder.
 
-Or use Terminal:
+## Useful shortcuts
+
+In Finder, choose **Go → Go to Folder…** and paste `~/Library/Application Support/Aion2Mac/scripts`. Double-click the file you need:
+
+| File | What it does |
+| --- | --- |
+| `start.command` | Starts the game |
+| `steam.command` | Opens this bottle’s Windows Steam for downloads and library management |
+| `refresh-audio.command` | Refreshes the audio output without restarting the game |
+| `doctor.command` | Checks the installation and prints diagnostics for a problem report |
+
+These helpers open Terminal. Day-to-day game launches use AION 2.app.
+
+## Advanced launch options
+
+To start from Terminal:
 
 ```bash
 "$HOME/Library/Application Support/Aion2Mac/scripts/start.command"

@@ -1,6 +1,19 @@
 name: Compatibility report
 description: Report a reproducible setup or gameplay problem
 body:
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Where did it happen?
+      options:
+        - Opening the Mac app
+        - Apple toolkit or Rosetta setup
+        - Preparing the bottle or updating Steam
+        - Steam sign-in or game installation
+        - Starting the game
+        - Gameplay, video, audio, or controls
+    validations:
+      required: true
   - type: input
     id: machine
     attributes:

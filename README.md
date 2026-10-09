@@ -73,9 +73,18 @@ With the default location, the script creates the bottle and a Mac launcher, add
 
 The release ZIP contains the launcher, which creates the bottle on first setup. Apple’s libraries, game files, and account data are supplied through their official interfaces.
 
+## After setup
+
+- **Play:** open AION 2.app. Steam runs in the background.
+- **Change graphics, sound, or controls:** use the game’s own settings. [Advanced launch options](docs/usage.md) are optional.
+- **Open Windows Steam separately:** in Finder, go to `~/Library/Application Support/Aion2Mac/scripts` and double-click **steam.command**. Your Mac’s native Steam app uses a separate installation.
+- **Update the Mac launcher:** quit AION 2.app, then replace it with the newer release app. It reuses your existing bottle. Replacing the launcher does not by itself upgrade the bottle’s runtime or compatibility fixes.
+
 ## Need help?
 
 [Troubleshooting](docs/troubleshooting.md) · [Screenshots](docs/screenshots.md) · [Performance](docs/performance.md) · [Options](docs/usage.md) · [Compatibility](docs/compatibility.md)
+
+Still stuck? [Report a problem](https://github.com/xenios-jp/aion2-mac/issues/new?template=bug.yml) with your Mac model, app version, and the step where it happened. [How to collect diagnostics](docs/troubleshooting.md#diagnostics-and-removal).
 
 ## Credits
 
