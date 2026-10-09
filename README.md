@@ -2,6 +2,8 @@
 
 Run the Windows Steam version of **AION 2** on Apple silicon with D3DMetal.
 
+This sets up a **Wine bottle**: a separate Windows environment containing Windows Steam, AION 2, and their settings. **AION 2.app** is the native Mac launcher that creates and opens that bottle.
+
 **Experimental preview.** Gameplay and cinematic pictures work on our test Mac. Fullscreen input, cinematic audio, DLSS, and stability still need in-game verification. [Current status →](docs/compatibility.md)
 
 ## Get started
@@ -54,9 +56,22 @@ Mount Apple’s Evaluation environment first, then run:
 curl -fsSL https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.4/install.sh | bash
 ```
 
+With the default location, the script creates the bottle and a Mac launcher, adds a shortcut on your Desktop when available, and opens the launcher. You do **not** need to download the app separately or drag anything into Applications. You can optionally copy the generated **AION 2.app** into Applications afterward.
+
 </details>
 
-The app uses native macOS controls and requires no Terminal. Setup creates a separate bottle; Apple’s libraries, game files, and account data are supplied through their official interfaces.
+### Where everything lives
+
+**Both setup methods use the same bottle location.** The bottle lives separately from the Mac app, so moving the app into Applications does not move the game.
+
+| Setup method | Mac launcher | Bottle |
+| --- | --- | --- |
+| Download the release ZIP | Unzip and drag **AION 2.app** into **Applications** (recommended), then open it to run setup | `~/Library/Application Support/Aion2Mac/prefix` |
+| Run the Terminal command | Created at `~/Library/Application Support/Aion2Mac/AION 2.app`, with a Desktop shortcut when available; copying it into Applications is optional | `~/Library/Application Support/Aion2Mac/prefix` |
+
+`~` means your home folder. In Finder, choose **Go → Go to Folder…** and paste `~/Library/Application Support/Aion2Mac` to see the bottle, runtime, and support files. A completed installation at this location is reused by either setup method; you do not need two bottles. Other Wine or CrossOver bottles are not automatically imported. [More options](docs/usage.md#where-the-bottle-lives).
+
+The release ZIP contains the launcher, which creates the bottle on first setup. Apple’s libraries, game files, and account data are supplied through their official interfaces.
 
 ## Need help?
 

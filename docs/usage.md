@@ -34,6 +34,12 @@ Run `doctor.command` before opening an issue. Share its concise output and the v
 
 ## Where the bottle lives
 
-A fresh setup stores its Windows environment at `~/Library/Application Support/Aion2Mac/prefix`, alongside its runtime and fixes. The `.app` is the Mac entry point. The downloaded app detects this project's completed installation even when the app version changes. Running setup again reuses a completed project installation; it does not search other Wine/CrossOver bottles or copy their accounts. Existing installations in other bottles need an explicit migration, which this preview does not automate.
+A bottle is a separate Windows environment containing Windows Steam, the game, and their settings. Both the downloaded app and the Terminal installer create it at `~/Library/Application Support/Aion2Mac/prefix` by default. The runtime, fixes, and logs live in its parent folder, `~/Library/Application Support/Aion2Mac`. In Finder, use **Go → Go to Folder…** to open that path.
+
+The `.app` is the native Mac launcher; the bottle is stored separately. For the release ZIP, unzip and drag **AION 2.app** into **Applications** before opening it (recommended). The Terminal installer instead creates `~/Library/Application Support/Aion2Mac/AION 2.app` and a Desktop shortcut when available. No separate app download or drag into Applications is required for Terminal setup; you may optionally copy its generated app into Applications.
+
+The downloaded app detects this project's completed installation even when the app version changes. Running setup again reuses a completed project installation; it does not search other Wine/CrossOver bottles or copy their accounts. Existing installations in other bottles need an explicit migration, which this preview does not automate.
+
+For an advanced Terminal installation, `install.sh --root /absolute/path` or `AION2_MAC_HOME` changes the installation folder; the bottle goes in its `prefix` subfolder. Automatic launcher creation and the Desktop shortcut apply only to the default location. A downloaded launcher also uses the default location unless launched with `AION2_MAC_HOME` set to the same custom folder.
 
 Setup shows nine stages with the current action. Downloads report received bytes. Setup completes Steam’s first client updates before handing over. The Steam handoff shows a waiting indicator and elapsed time until its window opens, then tracks whether it is visible, hidden, or closed. A prefix-scoped observer marks the Steam window open once its visible client window exists. Repeated clicks cannot schedule competing first-update repairs.
