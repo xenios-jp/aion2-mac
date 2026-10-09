@@ -50,6 +50,8 @@ Select the desired output in macOS Sound settings. The launcher forwards output 
 
 The native setup app has a Dock entry during onboarding and exits when it starts the game. The game has its own Dock entry; Steam's UI helper may still create another. Silent Steam suppresses its main window, but does not remove that helper's Dock icon.
 
+The running game’s Dock entry disappears when it closes. This does not remove the app or bottle. For a permanent launch shortcut, drag **AION 2.app** from Applications into the Dock. Pin the Mac launcher rather than the temporary Wine game process (which can show an executable icon).
+
 ## Clicks are displaced
 
 Use the included root-desktop launcher. Avoid `explorer /desktop=Aion2,1280x720`, stretching an outer desktop window, or live display-mode changes. The last two can resize the game without preserving the intended coordinate relationship. Use the desktop’s default resolution first, then an explicit `AION2_RESOLUTION` if needed.

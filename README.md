@@ -76,6 +76,7 @@ The release ZIP contains the launcher, which creates the bottle on first setup. 
 ## After setup
 
 - **Play:** open AION 2.app. Steam runs in the background.
+- **Keep it in the Dock:** drag **AION 2.app** from Applications into the Dock. The game’s temporary Dock entry disappears when the game closes; your pinned launcher stays.
 - **Change graphics, sound, or controls:** use the game’s own settings. [Advanced launch options](docs/usage.md) are optional.
 - **Open Windows Steam separately:** in Finder, go to `~/Library/Application Support/Aion2Mac/scripts` and double-click **steam.command**. Your Mac’s native Steam app uses a separate installation.
 - **Update the Mac launcher:** quit AION 2.app, then replace it with the newer release app. It reuses your existing bottle. Replacing the launcher does not by itself upgrade the bottle’s runtime or compatibility fixes.
