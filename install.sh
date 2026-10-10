@@ -155,6 +155,10 @@ for dll in dxgi d3d10 d3d11 d3d12 nvapi64; do
   cp "$GPTK/wine/x86_64-windows/$dll.dll" "$ENGINE/lib/wine/x86_64-windows/$dll.dll"
   ln -sf ../../external/libd3dshared.dylib "$ENGINE/lib/wine/x86_64-unix/$dll.so"
 done
+# Apple's NVAPI PE advertises the builtin module name nvapi.dll. Wine needs
+# that alias even when the game asks for nvapi64.dll.
+ln -sf nvapi64.dll "$ENGINE/lib/wine/x86_64-windows/nvapi.dll"
+ln -sf ../../external/libd3dshared.dylib "$ENGINE/lib/wine/x86_64-unix/nvapi.so"
 cp "$GPTK/wine/x86_64-windows/nvngx-on-metalfx.dll" "$ENGINE/lib/wine/x86_64-windows/nvngx.dll"
 ln -sf ../../external/libd3dshared.dylib "$ENGINE/lib/wine/x86_64-unix/nvngx.so"
 ditto "$STAGE/fixes" "$ROOT/fixes"

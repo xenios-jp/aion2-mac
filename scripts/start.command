@@ -38,7 +38,7 @@ WINEDEBUG=-all wine_run "$ROOT/fixes/bin/driver-notice.exe" >> "$ROOT/logs/drive
 NOTICE_PID=$!
 trap 'kill "$NOTICE_PID" 2>/dev/null || true' EXIT
 cd "$WINEPREFIX/drive_c/Program Files (x86)/Steam"
-printf 'Launching Aion 2: %s, MSync=%s, Metal HUD=%s, experimental DLSS=%s\n' "$SIZE" "$WINEMSYNC" "$MTL_HUD_ENABLED" "$D3DM_ENABLE_METALFX"
+printf 'Launching Aion 2: %s, MSync=%s, Metal HUD=%s, MetalFX bridge=%s\n' "$SIZE" "$WINEMSYNC" "$MTL_HUD_ENABLED" "$D3DM_ENABLE_METALFX"
 # root is the real Mac desktop, not a constrained emulated display.
 DYLD_INSERT_LIBRARIES="$ROOT/fixes/bin/wine-native-errno.dylib" \
   "$WINE" explorer.exe "/desktop=root,$SIZE" 'C:\Program Files (x86)\Steam\steam.exe' \
