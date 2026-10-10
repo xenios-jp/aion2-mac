@@ -4,7 +4,7 @@ Run the Windows Steam version of **AION 2** on Apple silicon with D3DMetal.
 
 This sets up a **Wine bottle**: a separate Windows environment containing Windows Steam, AION 2, and their settings. **AION 2.app** is the native Mac launcher that creates and opens that bottle.
 
-**Experimental preview.** Gameplay, cinematic pictures, and the DLSS menu work on our test Mac. Fullscreen input, cinematic audio, frame generation, and stability still need in-game verification. The DLSS loader fix is in the current source and is not yet included in the 0.1.4 release. [Current status →](docs/compatibility.md)
+**Experimental preview.** Gameplay, cinematic pictures, and the DLSS menu work on our test Mac. Fullscreen input, cinematic audio, frame generation, and stability still need in-game verification. Version 0.1.5 includes the DLSS loader fix. [Current status →](docs/compatibility.md)
 
 ## Get started
 
@@ -12,7 +12,7 @@ You need **Apple silicon, macOS 26 or newer, Rosetta, and about 120 GB free**. T
 
 ### 1. Open the app and get Apple’s toolkit
 
-[Download AION 2.app](https://github.com/xenios-jp/aion2-mac/releases/download/v0.1.4/AION-2-Mac-v0.1.4.zip), unzip it, and drag it into **Applications**. Open the app, then click **Download from Apple…**. Download Apple’s toolkit and open the **Evaluation environment** disk image inside it. The app detects it automatically.
+[Download AION 2.app](https://github.com/xenios-jp/aion2-mac/releases/download/v0.1.5/AION-2-Mac-v0.1.5.zip), unzip it, and drag it into **Applications**. Open the app, then click **Download from Apple…**. Download Apple’s toolkit and open the **Evaluation environment** disk image inside it. The app detects it automatically.
 
 <details>
 <summary>macOS says “AION 2.app Not Opened”?</summary>
@@ -47,13 +47,15 @@ Click **Open Steam**, sign in, and install **AION 2** and its offered prerequisi
 
 Closed Steam before finishing? Use **Open Steam Again** in the setup window. [Troubleshooting](docs/troubleshooting.md).
 
+**Updating from an earlier version?** Replace the old app with 0.1.5 and open it. It refreshes the launcher scripts and reuses your installed game and settings. Terminal users can rerun the command below to update the same bottle.
+
 <details>
 <summary>Prefer Terminal?</summary>
 
 Mount Apple’s Evaluation environment first, then run:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.4/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/xenios-jp/aion2-mac/v0.1.5/install.sh | bash
 ```
 
 With the default location, the script creates the bottle and a Mac launcher, adds a shortcut on your Desktop when available, and opens the launcher. You do **not** need to download the app separately or drag anything into Applications. You can optionally copy the generated **AION 2.app** into Applications afterward.

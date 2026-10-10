@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 umask 077
-VERSION=0.1.4
+VERSION=0.1.5
 RUNTIME_SHA=a4b5d63493f80698cce5cad8e7212d9a51c8292037b00c478f4652636fcfd331
-FIXES_SHA=fdc45a0245242aeaac7f74e312710c96fdd4aabb16b7f5a0259cbf7e6dc414cf
+FIXES_SHA=685498c9353b9f667b82bb204e83c35380910858b0d8d8c58798001559738b98
 ROOT="${AION2_MAC_HOME:-$HOME/Library/Application Support/Aion2Mac}"
 GPTK="${AION2_GPTK_LIB:-}"
 RUNTIME_ARCHIVE="${AION2_RUNTIME_ARCHIVE:-}" FIXES_ARCHIVE="${AION2_FIXES_ARCHIVE:-}" SKIP_STEAM=0 NO_LAUNCH=0 NO_APP=0 DRY_RUN=0
@@ -41,6 +41,39 @@ if [ "$DRY_RUN" = 0 ] && [ -f "$ROOT/.aion2-mac" ] &&
    [ -f "$ROOT/prefix/drive_c/Program Files (x86)/Steam/steam.exe" ] &&
    find -H "$ROOT" -maxdepth 1 -name ".ready-v*" | grep -q .; then
   printf 'Already installed: %s/scripts/start.command\n' "$ROOT"
+  if [ ! -f "$ROOT/.ready-v$VERSION" ]; then
+    mkdir "$ROOT/.install-lock" 2>/dev/null || die 'Another installer is running (or remove a stale .install-lock).'
+    STAGE=$(mktemp -d "${TMPDIR:-/tmp}/aion2-update.XXXXXX")
+    trap 'rm -rf "$STAGE"; rmdir "$ROOT/.install-lock" 2>/dev/null || true' EXIT
+    printf 'Updating AION 2 launcher files to %s. Your game and settings are preserved.\n' "$VERSION"
+    if [ -z "$FIXES_ARCHIVE" ]; then
+      FIXES_ARCHIVE="$STAGE/fixes.tar.gz"
+      curl --fail --location --retry 2 --connect-timeout 20 --max-time 1800 --proto '=https' --tlsv1.2 \
+        "https://github.com/xenios-jp/aion2-mac/releases/download/v$VERSION/aion2-mac-fixes-v$VERSION.tar.gz" -o "$FIXES_ARCHIVE"
+    fi
+    [ "$(shasum -a 256 "$FIXES_ARCHIVE" | awk '{print $1}')" = "$FIXES_SHA" ] || die 'Compatibility update checksum mismatch.'
+    tar -tzf "$FIXES_ARCHIVE" > "$STAGE/archive-list"
+    awk '/^\// || /(^|\/)\.\.(\/|$)/ {bad=1} END {exit bad}' "$STAGE/archive-list" || die 'Unsafe archive member path.'
+    mkdir "$STAGE/fixes"
+    tar -xzf "$FIXES_ARCHIVE" -C "$STAGE/fixes"
+    [ -f "$STAGE/fixes/scripts/env.sh" ] && [ -f "$STAGE/fixes/scripts/start.command" ] || die 'Compatibility update is incomplete.'
+    ditto "$STAGE/fixes/scripts" "$ROOT/scripts"
+    ditto "$STAGE/fixes/scripts" "$ROOT/fixes/scripts"
+    mkdir -p "$ROOT/fixes/bin"
+    cp "$STAGE/fixes/bin/aion2-launcher" "$ROOT/fixes/bin/aion2-launcher.new"
+    mv "$ROOT/fixes/bin/aion2-launcher.new" "$ROOT/fixes/bin/aion2-launcher"
+    source "$ROOT/scripts/env.sh"
+    if [ "$NO_APP" = 0 ] && [ "$ROOT" = "$HOME/Library/Application Support/Aion2Mac" ]; then
+      if [ -f "${BASH_SOURCE[0]}" ]; then cp "${BASH_SOURCE[0]}" "$STAGE/fixes/install.sh"; fi
+      "$STAGE/fixes/scripts/build-app.sh" "$STAGE/app"
+      if [ -d "$ROOT/AION 2.app" ]; then mv "$ROOT/AION 2.app" "$STAGE/previous.app"; fi
+      if ! mv "$STAGE/app/AION 2.app" "$ROOT/AION 2.app"; then
+        [ ! -d "$STAGE/previous.app" ] || mv "$STAGE/previous.app" "$ROOT/AION 2.app"
+        die 'Could not replace the launcher app. Your game is unchanged.'
+      fi
+    fi
+    touch "$ROOT/.ready-v$VERSION"
+  fi
   if [ "$NO_LAUNCH" = 0 ]; then
     if [ -d "$ROOT/AION 2.app" ]; then open "$ROOT/AION 2.app"; else open "$ROOT/scripts/start.command"; fi
   fi

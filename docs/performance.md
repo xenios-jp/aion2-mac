@@ -44,7 +44,7 @@ Local inspection of GPTK 4.0 beta 2 found several costs worth measuring. These a
 | Resource barriers | The examined resolver tracks subresources and stage dependencies, and can use narrower barriers. Initialization sets its force-all-barriers flag to zero. | No evidence of an accidental force-all-stalls setting. Removing synchronization could corrupt rendering. The legacy resolver does not establish every Metal 4 path's behavior. |
 | Texture copies | Compatible copies have a direct path. Certain plane/format cases allocate temporary storage and issue texture-to-buffer then buffer-to-texture transfers with synchronization. | A possible bandwidth cost, but first measure how often the game selects it. Those conversions cannot generally be discarded. |
 | Geometry translation | Indirect drawing includes geometry-pipeline preparation and conditional extra dispatches. | Requires per-scene operation counts and timings before selecting a game setting or renderer change. |
-| NGX feature detection | Missing NVAPI builtin aliases prevented correct initialization. Repairing the aliases made DLSS visible in the game. | Fixed in working source. This unlocks MetalFX upscaling; a gameplay FPS improvement has not yet been measured. |
+| NGX feature detection | Missing NVAPI builtin aliases prevented correct initialization. Repairing the aliases made DLSS visible in the game. | Fixed in 0.1.5. This unlocks MetalFX upscaling; a gameplay FPS improvement has not yet been measured. |
 
 MSync is already enabled and GPU capture/debug information remain disabled. Steam's software CEF is a separate CPU/memory cost; its presence does not mean the game's D3D12 rendering is software-rendered. Keep shader caches warm. Start with the game's DLSS Quality/Balanced/Performance options, then compare the same gameplay scene; presets trade internal resolution for image quality.
 
@@ -56,7 +56,7 @@ The Apple bridge passed a standalone frame-generation evaluation and constant-im
 
 [NVIDIA's integration guide](https://github.com/NVIDIA-RTX/Streamline/blob/main/docs/ProgrammingGuideDLSS_G.md) requires the application to enable interpolation, supply its inputs, and use compatible presentation. Loading the plugin alone is insufficient. AMD frame interpolation remains disabled because of the earlier presentation crash.
 
-Working-source launch scripts enable the MetalFX bridge by default; `AION2_DLSS=0` opts out. `AION2_HUD=1` enables the HUD on the next script launch; capture remains off. These changes are not included in release 0.1.4. On macOS 27, the supported live controls are:
+Version 0.1.5 launch scripts enable the MetalFX bridge by default; `AION2_DLSS=0` opts out. `AION2_HUD=1` enables the HUD on the next script launch; capture remains off. On macOS 27, the supported live controls are:
 
 ```sh
 metalperftrace setup --enable hud --pid GAME_PID

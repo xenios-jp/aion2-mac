@@ -31,6 +31,8 @@ import SwiftUI
     func begin() {
         guard timer == nil else { return }
         if !preview && environmentReady {
+            do { try refreshBundledScripts() }
+            catch { fail("The launcher update couldn’t finish. Your game is unchanged. Try again or check that the installation folder is writable."); return }
             if gameReady { launchGame(); return }
             screen = .steam
         }
@@ -45,6 +47,25 @@ import SwiftUI
               fm.fileExists(atPath: root.appendingPathComponent("prefix/drive_c/Program Files (x86)/Steam/steam.exe").path)
         else { return false }
         return ((try? fm.contentsOfDirectory(atPath: root.path)) ?? []).contains { $0.hasPrefix(".ready-v") }
+    }
+    func refreshBundledScripts(from directory: URL? = nil) throws {
+        guard let source = directory ?? Bundle.main.resourceURL?.appendingPathComponent("scripts"),
+              fm.fileExists(atPath: source.appendingPathComponent("env.sh").path),
+              fm.fileExists(atPath: source.appendingPathComponent("start.command").path) else {
+            throw CocoaError(.fileReadNoSuchFile)
+        }
+        let scripts = try fm.contentsOfDirectory(at: source, includingPropertiesForKeys: [.isRegularFileKey])
+            .filter { ["sh", "command"].contains($0.pathExtension) }
+        for folder in ["scripts", "fixes/scripts"] {
+            let target = root.appendingPathComponent(folder)
+            try fm.createDirectory(at: target, withIntermediateDirectories: true)
+            for script in scripts {
+                let destination = target.appendingPathComponent(script.lastPathComponent)
+                let data = try Data(contentsOf: script)
+                if (try? Data(contentsOf: destination)) != data { try data.write(to: destination, options: .atomic) }
+                try fm.setAttributes([.posixPermissions: 0o755], ofItemAtPath: destination.path)
+            }
+        }
     }
     var gameReady: Bool {
         let apps = root.appendingPathComponent("prefix/drive_c/Program Files (x86)/Steam/steamapps")
@@ -267,7 +288,12 @@ import SwiftUI
         let name = fm.fileExists(atPath: root.appendingPathComponent("logs/onboarding.log").path) ? "onboarding.log" : "launcher.log"
         NSWorkspace.shared.open(root.appendingPathComponent("logs/\(name)"))
     }
-    func retry() { error = ""; screen = environmentReady ? .steam : .welcome; refresh() }
+    func retry() {
+        error = ""
+        if environmentReady && timer == nil { begin(); return }
+        screen = environmentReady ? .steam : .welcome
+        refresh()
+    }
     private func fail(_ message: String) { error = message; screen = .failure }
 }
 

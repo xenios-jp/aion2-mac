@@ -2,7 +2,7 @@
 set -euo pipefail
 REPO=$(cd "$(dirname "$0")/.." && pwd)
 OUT="${1:-$REPO/build}"
-VERSION=0.1.4
+VERSION=0.1.5
 mkdir -p "$OUT"
 APP="$OUT/AION 2.app"
 [ ! -e "$APP" ] || { echo "App already exists: $APP" >&2; exit 1; }
@@ -15,6 +15,7 @@ else
 fi
 cp "$REPO/assets/Aion.icns" "$APP/Contents/Resources/Aion.icns"
 cp "$REPO/assets/Aion.png" "$APP/Contents/Resources/Aion.png"
+ditto "$REPO/scripts" "$APP/Contents/Resources/scripts"
 if [ -f "$REPO/install.sh" ]; then
   cp "$REPO/install.sh" "$APP/Contents/Resources/install.sh"
 else
@@ -32,7 +33,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleIconFile</key><string>Aion.icns</string>
 <key>CFBundleShortVersionString</key><string>$VERSION</string>
-<key>CFBundleVersion</key><string>4</string>
+<key>CFBundleVersion</key><string>5</string>
 <key>LSMinimumSystemVersion</key><string>26.0</string>
 <key>LSApplicationCategoryType</key><string>public.app-category.games</string>
 <key>NSHighResolutionCapable</key><true/>

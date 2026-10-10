@@ -21,6 +21,22 @@ import SwiftUI
         try fm.setAttributes([.posixPermissions: 0o755], ofItemAtPath: root.appendingPathComponent("scripts/start.command").path)
         try file("prefix/drive_c/Program Files (x86)/Steam/steam.exe")
         precondition(launcher.environmentReady)
+        let bundled = root.appendingPathComponent("bundled-scripts")
+        try file("bundled-scripts/env.sh", "# updated environment\n")
+        try file("bundled-scripts/start.command", "#!/bin/bash\n# updated launcher\n")
+        try file("bundled-scripts/ignore.txt", "not a script")
+        try file("prefix/settings-sentinel", "keep game settings")
+        try launcher.refreshBundledScripts(from: bundled)
+        try launcher.refreshBundledScripts(from: bundled)
+        for folder in ["scripts", "fixes/scripts"] {
+            let script = root.appendingPathComponent("\(folder)/start.command")
+            let contents = try String(contentsOf: script, encoding: .utf8)
+            precondition(contents == "#!/bin/bash\n# updated launcher\n")
+            precondition(fm.isExecutableFile(atPath: script.path))
+            precondition(!fm.fileExists(atPath: root.appendingPathComponent("\(folder)/ignore.txt").path))
+        }
+        let settings = try String(contentsOf: root.appendingPathComponent("prefix/settings-sentinel"), encoding: .utf8)
+        precondition(settings == "keep game settings")
         let apps = "prefix/drive_c/Program Files (x86)/Steam/steamapps/"
         try file(apps + "appmanifest_3393110.acf", "\"StateFlags\" \"4\"\n\"installdir\" \"AION2\"")
         precondition(!launcher.gameReady) // A manifest alone does not mean the game exists.
@@ -46,6 +62,6 @@ import SwiftUI
         precondition(!launcher.steamStarting && launcher.steamStatus.contains("background"))
         launcher.applySteamState("failed")
         precondition(!launcher.steamStarting && !launcher.steamOpened)
-        print("PASS: fresh setup, prior-version detection, installed game, partial download, safe manifest paths, real Steam progress parsing, Steam close/background/failure states")
+        print("PASS: fresh setup, prior-version script update, settings preservation, installed game, partial download, safe manifest paths, real Steam progress parsing, Steam close/background/failure states")
     }
 }
