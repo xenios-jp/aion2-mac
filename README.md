@@ -4,7 +4,7 @@ Run the Windows Steam version of **AION 2** on Apple silicon with D3DMetal.
 
 This sets up a **Wine bottle**: a separate Windows environment containing Windows Steam, AION 2, and their settings. **AION 2.app** is the native Mac launcher that creates and opens that bottle.
 
-**Experimental preview.** Gameplay and cinematic pictures work on our test Mac. Fullscreen input, cinematic audio, DLSS, and stability still need in-game verification. [Current status →](docs/compatibility.md)
+**Experimental preview.** Gameplay, cinematic pictures, and the DLSS menu work on our test Mac. Fullscreen input, cinematic audio, frame generation, and stability still need in-game verification. The DLSS loader fix is in the current source and is not yet included in the 0.1.4 release. [Current status →](docs/compatibility.md)
 
 ## Get started
 

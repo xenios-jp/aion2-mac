@@ -34,6 +34,38 @@ Apple's [TBDR guidance](https://developer.apple.com/documentation/metal/tailor-y
 
 We can modify the open Wine host/window code and test documented D3DMetal controls. A game-specific runtime shim must preserve graphics API semantics and pass correctness tests before shipping. Native tile shaders or a rewritten deferred renderer generally need engine source and a native port. D3DMetal is supplied as Apple's binary; this project does not redistribute a modified binary.
 
+## Translation analysis — 2026-10-10
+
+Local inspection of GPTK 4.0 beta 2 found several costs worth measuring. These are code paths present in the binary, not proof that they dominate AION's frames.
+
+| Path | Observed behavior | Can we fix it easily? |
+| --- | --- | --- |
+| CPU command translation | The supplied D3DMetal framework is x86_64. Some indirect-command paths batch commands; a conditional fallback emits one command per record. Some state-reset paths allocate temporary vectors. | No measured hot path yet. We cannot turn Apple's binary into an ARM-native renderer through a launcher flag. |
+| Resource barriers | The examined resolver tracks subresources and stage dependencies, and can use narrower barriers. Initialization sets its force-all-barriers flag to zero. | No evidence of an accidental force-all-stalls setting. Removing synchronization could corrupt rendering. The legacy resolver does not establish every Metal 4 path's behavior. |
+| Texture copies | Compatible copies have a direct path. Certain plane/format cases allocate temporary storage and issue texture-to-buffer then buffer-to-texture transfers with synchronization. | A possible bandwidth cost, but first measure how often the game selects it. Those conversions cannot generally be discarded. |
+| Geometry translation | Indirect drawing includes geometry-pipeline preparation and conditional extra dispatches. | Requires per-scene operation counts and timings before selecting a game setting or renderer change. |
+| NGX feature detection | Missing NVAPI builtin aliases prevented correct initialization. Repairing the aliases made DLSS visible in the game. | Fixed in working source. This unlocks MetalFX upscaling; a gameplay FPS improvement has not yet been measured. |
+
+MSync is already enabled and GPU capture/debug information remain disabled. Steam's software CEF is a separate CPU/memory cost; its presence does not mean the game's D3D12 rendering is software-rendered. Keep shader caches warm. Start with the game's DLSS Quality/Balanced/Performance options, then compare the same gameplay scene; presets trade internal resolution for image quality.
+
+The latest historical Metal counter collection identifies the game's process but contains no per-layer frame records. It cannot establish current frame time, encoder timing, or a new performance gain. No binary patch is shipped based solely on static findings.
+
+### Frame generation and HUD controls
+
+The Apple bridge passed a standalone frame-generation evaluation and constant-image GPU readback. That test does not validate motion, HUD composition, frame pacing, or AION's swap chain. The shipped Streamline plugin separately checks hardware scheduling and a NVIDIA driver-specific fallback. The fallback entry point is absent from the tested Apple NVAPI implementation. Forcing a console variable is therefore not a verified frame-generation solution.
+
+[NVIDIA's integration guide](https://github.com/NVIDIA-RTX/Streamline/blob/main/docs/ProgrammingGuideDLSS_G.md) requires the application to enable interpolation, supply its inputs, and use compatible presentation. Loading the plugin alone is insufficient. AMD frame interpolation remains disabled because of the earlier presentation crash.
+
+Working-source launch scripts enable the MetalFX bridge by default; `AION2_DLSS=0` opts out. `AION2_HUD=1` enables the HUD on the next script launch; capture remains off. These changes are not included in release 0.1.4. On macOS 27, the supported live controls are:
+
+```sh
+metalperftrace setup --enable hud --pid GAME_PID
+metalperftrace setup --enable per-frame-metrics --pid GAME_PID
+metalperftrace setup --enable shader-compiler-metrics --pid GAME_PID
+```
+
+Use the actual current Wine game process ID, not a previous run's PID. Disable measurement features after testing with the matching `--disable` command. These controls enable overlays/counters, not GPU frame capture. The HUD does not force DLSS or frame generation. Its MetalFX jitter visualizations are debugging tools, not general quality presets.
+
 ## Documentation reviewed
 
 The local GPTK 4.0 beta 2 evaluation README covers setup, supported environments, NGX/MetalFX installation, documented variables, logging, GPU capture and troubleshooting. Its sample covers native window/layer setup and renderer integration. These are distinct from running an unchanged Windows game through translation.

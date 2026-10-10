@@ -1,6 +1,6 @@
 # Compatibility status
 
-Status recorded on 2026-10-08. The reference machine is an Apple M5 Pro with 24 GB unified memory, macOS 27.0.1, and an external 5120×2160 display configured as a 2560×1080 logical desktop. The installed Steam game build was 25767555.
+Last reviewed on 2026-10-10. The reference machine is an Apple M5 Pro with 24 GB unified memory, macOS 27.0.1, and an external 5120×2160 display configured as a 2560×1080 logical desktop. The installed Steam game build was 25767555.
 
 | Area | Evidence | Remaining work |
 | --- | --- | --- |
@@ -10,7 +10,8 @@ Status recorded on 2026-10-08. The reference machine is an Apple M5 Pro with 24 
 | Cinematic pictures | Patched H.264 MFT decoded 18 actual game frames with `IMF2DBuffer`; user confirmed visible cinematics | Other codecs and every cinematic untested |
 | Cinematic audio | Missing AAC metadata failed before the patch; raw and regular AAC tests now each decode 35 audible PCM frames, with and without metadata | Aion playback after deploying this patch has not been confirmed |
 | Mouse clicks | Emulated-desktop clicks failed when the window moved right/down; root desktop restores physical monitor bounds | User confirmation of all fullscreen menu edges is pending |
-| DLSS / MetalFX | D3D12 device, NGX initialization, feature requirements, and SuperSampling availability probes passed; Apple bridge loaded in Aion | Aion originally hid DLSS; matching hex DXGI/registry IDs now verified, in-game menu confirmation pending |
+| DLSS / MetalFX | NVAPI builtin loader aliases repaired; standalone NGX create/evaluate and GPU readback passed; user confirmed DLSS appears in Aion on 2026-10-10 | Moving-scene quality and gameplay FPS comparison pending; loader repair is not in release 0.1.4 |
+| DLSS frame generation | Standalone Apple bridge create/evaluate and constant-image GPU readback passed | Game option absent; Streamline scheduling gate and NVIDIA driver fallback remain incompatible/unverified; no in-game frame generation claim |
 | MSync | 30,000 event handoffs: 28.89 µs with server sync, 12.32 µs with MSync; both passed | This is not a game-FPS result; sustained gameplay validation pending |
 | Presentation | Metal HUD visible; reported Composited | Layer verified opaque/framebuffer-only, RGB pixel format 90; native fullscreen shortcut does nothing; fullscreen-to-windowed freeze reported. Direct presentation remains unresolved |
 | Fresh installer | Fresh bottle, Steam download/wrapper, desktop helper, H.264 2D samples (17 frames), and AAC without metadata (35 PCM frames) passed independently | A fresh-bottle full Aion download/gameplay run is still pending |
