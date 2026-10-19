@@ -1,0 +1,7 @@
+MetalFG
+Copyright (c) 2026 xenios-jp. Licensed under the BSD 3-Clause License (see LICENSE).
+
+The weight extractor's tensor-locating approach (a fingerprint scan of the DLL) follows the
+design of HelixSR's setup tool (setup/lib/extract_weights.py, https://github.com/lonewolf0622/HelixSR),
+Apache License 2.0, Copyright 2026 lonewolf0622. No HelixSR code is included. HelixSR is
+unaffiliated with and does not endorse this project.

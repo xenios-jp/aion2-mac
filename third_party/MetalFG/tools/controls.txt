@@ -1,0 +1,33 @@
+# Control builds of fg.test_scenes_r3 (control build contract): the NAME of METALFG_CTL_<NAME>, one per row of the table.
+# "planner" controls change the grid planner, the create limits or the call planner (the planner test hook of res-grids);
+# the others change a pass.
+BLEND
+T_HALF planner
+NO_DISOCC
+UP_HALF
+DEPTH_FLIP
+NO_RESET planner
+KEEP_STATE
+NO_SANITISE
+NO_MENU planner
+NO_OVERRIDE
+FEAT_WEIGHTS
+CEIL planner
+DF_GE planner
+DM_GE planner
+S_LT planner
+N1_ORIGIN planner
+N1_ORIGIN_X planner
+PYR9 planner
+ZERO_BORDER
+N2_PAD16 planner
+OPYR12 planner
+MPYR11 planner
+PYR12 planner
+N1_ROUND16 planner
+NO_WCAP planner
+NO_HCAP planner
+HCAP_OFF1 planner
+MIN8 planner
+NO_MIN planner
+DM4
